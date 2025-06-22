@@ -1,7 +1,7 @@
 <template>
   <div :class="containerBg" class="min-h-screen flex items-center justify-center px-4">
     <div class="w-full max-w-sm bg-white shadow-xl rounded-3xl p-6 text-center space-y-6">
-      
+
       <!-- 결과 이미지 -->
       <img :src="`/${result.image}`" class="w-28 h-28 mx-auto rounded-full shadow" alt="결과 이미지" />
       <h2 class="text-xl font-bold text-[#5e3c2c]">{{ result.title }}</h2>
@@ -28,27 +28,31 @@
           </button>
         </router-link>
       </div>
+
+      <!-- 광고 영역 -->
+      <AdBanner />
     </div>
   </div>
 </template>
 
 <script setup>
 import { useRoute } from 'vue-router'
+import { computed, onMounted } from 'vue'
 import testData from '../data/test.json'
-import { computed, onMounted } from 'vue' // ✅ 반드시 onMounted 포함!
+import AdBanner from '../components/AdBanner.vue'
 
 const route = useRoute()
 const resultKey = route.query.result
 const result = testData.results[resultKey]
 
+// 배경 색 조건부 클래스
 const containerBg = computed(() => {
-  if (resultKey.startsWith('T')) {
-    return 'bg-gradient-to-b from-[#e0f7fa] to-[#cce5ff]'
-  } else {
-    return 'bg-gradient-to-b from-[#fdf6f0] to-[#f5ebe0]'
-  }
+  return resultKey.startsWith('T')
+    ? 'bg-gradient-to-b from-[#e0f7fa] to-[#cce5ff]'
+    : 'bg-gradient-to-b from-[#fdf6f0] to-[#f5ebe0]'
 })
 
+// 카카오 공유 함수
 function shareToKakao() {
   const url = window.location.href
   const text = `${result.title} 유형 테스트 결과!\n\n${result.desc}`
@@ -80,7 +84,6 @@ function shareToKakao() {
   }
 }
 
-// ✅ onMounted 등록 시 import 꼭 필요!
 onMounted(() => {
   if (window.Kakao && !window.Kakao.isInitialized()) {
     window.Kakao.init('9d00addb581b032033f8b6cf7a6415b3')

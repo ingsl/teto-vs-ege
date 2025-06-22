@@ -25,6 +25,9 @@
       <div class="text-xs text-gray-400">
         Q{{ currentIdx + 1 }} / {{ testData.questions.length }}
       </div>
+
+      <!-- ✅ 광고 배너 -->
+      <AdBanner />
     </div>
   </div>
 </template>
@@ -33,6 +36,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import testData from '../data/test.json'
+import AdBanner from '../components/AdBanner.vue' // ✅ 광고 컴포넌트 불러오기
 
 const router = useRouter()
 const currentIdx = ref(0)
