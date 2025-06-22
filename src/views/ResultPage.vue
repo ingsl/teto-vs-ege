@@ -35,37 +35,56 @@
 <script setup>
 import { useRoute } from 'vue-router'
 import testData from '../data/test.json'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue' // ✅ 반드시 onMounted 포함!
 
 const route = useRoute()
 const resultKey = route.query.result
 const result = testData.results[resultKey]
 
-// 배경 색 조건부 클래스
 const containerBg = computed(() => {
   if (resultKey.startsWith('T')) {
-    return 'bg-gradient-to-b from-[#e0f7fa] to-[#cce5ff]' // 테토남
+    return 'bg-gradient-to-b from-[#e0f7fa] to-[#cce5ff]'
   } else {
-    return 'bg-gradient-to-b from-[#fdf6f0] to-[#f5ebe0]' // 에겐남
+    return 'bg-gradient-to-b from-[#fdf6f0] to-[#f5ebe0]'
   }
 })
 
-// 카카오 공유 함수
 function shareToKakao() {
   const url = window.location.href
   const text = `${result.title} 유형 테스트 결과!\n\n${result.desc}`
 
   if (window.Kakao && window.Kakao.isInitialized()) {
     window.Kakao.Link.sendDefault({
-      objectType: 'text',
-      text,
-      link: {
-        mobileWebUrl: url,
-        webUrl: url,
+      objectType: 'feed',
+      content: {
+        title: `${result.title} 유형 테스트 결과!`,
+        description: result.desc,
+        imageUrl: `https://tetonam-vs-egen.netlify.app/${result.image}`,
+        link: {
+          mobileWebUrl: url,
+          webUrl: url,
+        },
       },
+      buttons: [
+        {
+          title: '나도 테스트하러 가기',
+          link: {
+            mobileWebUrl: 'https://tetonam-vs-egen.netlify.app',
+            webUrl: 'https://tetonam-vs-egen.netlify.app',
+          },
+        },
+      ],
     })
   } else {
     alert('카카오톡 공유 기능이 로드되지 않았습니다.')
   }
 }
+
+// ✅ onMounted 등록 시 import 꼭 필요!
+onMounted(() => {
+  if (window.Kakao && !window.Kakao.isInitialized()) {
+    window.Kakao.init('9d00addb581b032033f8b6cf7a6415b3')
+    console.log('Kakao SDK 초기화됨:', window.Kakao.isInitialized())
+  }
+})
 </script>
