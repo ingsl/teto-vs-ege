@@ -3,8 +3,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
+  server: {
+    https: true
+  }
 })
-
-server: {
-  https: true
-}
