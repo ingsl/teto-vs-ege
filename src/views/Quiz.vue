@@ -26,8 +26,8 @@
         Q{{ currentIdx + 1 }} / {{ testData.questions.length }}
       </div>
 
-      <!-- ✅ 광고 배너 -->
-      <AdBanner />
+      <!-- 광고 배너 -->
+      <!-- <AdBanner /> -->
     </div>
   </div>
 </template>

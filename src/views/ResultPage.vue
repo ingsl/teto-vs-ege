@@ -87,7 +87,6 @@ function shareToKakao() {
 onMounted(() => {
   if (window.Kakao && !window.Kakao.isInitialized()) {
     window.Kakao.init('9d00addb581b032033f8b6cf7a6415b3')
-    console.log('Kakao SDK 초기화됨:', window.Kakao.isInitialized())
   }
 })
 </script>
